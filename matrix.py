@@ -61,12 +61,49 @@ class Matrix:
                             new_mat.matrix[i][j] += self.matrix[i][k] * other.matrix[k][j]
                 return new_mat
 
+    def transpose_diagonal(self):
+        new_mat = Matrix(self.m, self.n)
+        for j in range(self.m):
+            new_row = []
+            for i in range(self.n):
+                new_row.append(self.matrix[i][j])
+            new_mat.matrix[j] = new_row
+
+        return new_mat
+
+    def transpose_side_diagonal(self):
+        new_mat = Matrix(self.m, self.n)
+        for j in range(self.m -1, -1, -1):
+            new_row = []
+            for i in range(self.n - 1, -1, -1):
+                new_row.append(self.matrix[i][j])
+            new_mat.matrix[self.n-1 - j] = new_row
+
+        return new_mat
+
+    def transpose_vertical(self):
+        new_mat = Matrix(self.n, self.m)
+        for i in range(len(self.matrix)):
+            new_mat.matrix[i] = reversed(self.matrix[i])
+        return new_mat
+
+    def transpose_horizontal(self):
+        new_mat = self
+        size = new_mat.n - 1
+        i = 0
+        while i <= size // 2:
+            new_mat.matrix[i], new_mat.matrix[size-i] = new_mat.matrix[size-i], new_mat.matrix[i]
+            i += 1
+        return new_mat
+
+
 class MatrixException(Exception):
     pass
 
-
-"""
-11*11 + 12*21 + 13*31 |  11*12 + 12*22 + 13*32 | 11*13 + 12*23 + 13*33
-21*11 + 22*21 + 23*31 |  21*12 + 22*22 + 23*32 | 21*13 + 22*23 + 23*33
-31*11 + 32*21 + 33*31 |  31*12 + 32*22 + 33*32 | 31*13 + 32*23 + 33*33
-"""
+if __name__ == '__main__':
+    m = Matrix.create()
+    print("Original matrix:")
+    print(m)
+    mT = m.transpose_side_diagonal()
+    print("Transposed matrix")
+    print(mT)
